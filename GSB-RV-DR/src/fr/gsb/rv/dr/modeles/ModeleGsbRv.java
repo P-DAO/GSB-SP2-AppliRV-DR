@@ -1,12 +1,16 @@
 package fr.gsb.rv.dr.modeles;
 
+import fr.gsb.rv.dr.entities.Praticien;
 import fr.gsb.rv.dr.entities.Visiteur;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModeleGsbRv {
     
@@ -48,5 +52,57 @@ public class ModeleGsbRv {
         catch( Exception e ){
             return null ;
         } 
+    }
+    
+    public static List<Praticien> getPraticiensHesitants() throws ConnexionException{
+        
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        List<Praticien> praHesitant = new ArrayList<Praticien>();
+        
+        /*String requete = ("SELECT max(rap_date_visite) as visite, p.pra_num, pra_nom, pra_ville, rap_coeff_confiance "
+                + "FROM Praticien p "
+                + "INNER JOIN RapportVisite rv "
+                + "ON p.pra_num=rv.pra_num "
+                + "WHERE rap_coeff_confiance<5 "
+                + "GROUP BY pra_nom");*/
+        
+        String requete = ("select rap_date_visite, p.pra_num, pra_nom, pra_ville, rap_coeff_confiance "
+                + "from Praticien p "
+                + "inner join RapportVisite rv "
+                + "on p.pra_num=rv.pra_num, "
+                + "(select max(rap_date_visite) as MAX_DATE "
+                + "from RapportVisite "
+                + "where rap_coeff_confiance <5 group by pra_num)as MAX "
+                + "where rv.rap_coeff_confiance=rap_coeff_confiance "
+                + "and rv.rap_date_visite=MAX.MAX_DATE");
+       
+        
+        try {
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( requete ) ;
+            
+            ResultSet resultat = requetePreparee.executeQuery() ;
+            if( resultat.next() ){
+                do{
+                    Praticien praticien = new Praticien();
+                    praticien.setPra_num(resultat.getInt("pra_num"));
+                    praticien.setPra_nom(resultat.getString("pra_nom"));
+                    praticien.setPra_ville(resultat.getString("pra_ville"));
+                    praticien.setDernierCoefConfiance(resultat.getInt("rap_coeff_confiance"));
+                    praticien.setPra_dateDernierVisite(Date.valueOf(resultat.getString("rap_date_visite")).toLocalDate());
+                    
+                    praHesitant.add(praticien);
+                    
+                }while( resultat.next() == true );
+                return praHesitant;
+            }
+            else {
+                return praHesitant ;
+            }
+        }
+        catch( Exception e ){
+            System.out.println(e.getMessage());
+            return null ;
+        }  
     }
 }

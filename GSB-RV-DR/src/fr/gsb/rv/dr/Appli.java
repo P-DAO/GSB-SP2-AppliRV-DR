@@ -5,16 +5,20 @@
  */
 package fr.gsb.rv.dr;
 
+import fr.gsb.rv.dr.entities.Praticien;
 import fr.gsb.rv.dr.vues.VueConnexion;
 import fr.gsb.rv.dr.entities.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
+import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
 import fr.gsb.rv.dr.vues.PanneauAccueil;
 import fr.gsb.rv.dr.vues.PanneauPraticiens;
 import fr.gsb.rv.dr.vues.PanneauRapports;
 import java.sql.Connection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -151,15 +155,24 @@ public class Appli extends Application {
         itemSeDeconnecter.setOnAction(
         new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event ){
-                Session.fermer();
-                primaryStage.setTitle("GSB-RV-DR");
-                menuRapport.setDisable(true);
-                menuPraticiens.setDisable(true);
-                itemSeDeconnecter.setDisable(true);
-                itemSeConnecter.setDisable(false);
-                vueAccueil.setVisible(false);
-                vueRapports.setVisible(false);
-                vuePraticiens.setVisible(false);
+                Alert alertQuitter = new Alert(Alert.AlertType.CONFIRMATION);
+                alertQuitter.setTitle("Demande de confirmation");
+                alertQuitter.setContentText("Voulez-vous vous déconnecter?");
+                ButtonType btnOui = new ButtonType("Oui");
+                ButtonType btnNon = new ButtonType("Non");
+                alertQuitter.getButtonTypes().setAll(btnOui, btnNon);
+                Optional<ButtonType>reponse = alertQuitter.showAndWait();
+                if (reponse.get() == btnOui){   
+                    Session.fermer();
+                    primaryStage.setTitle("GSB-RV-DR");
+                    menuRapport.setDisable(true);
+                    menuPraticiens.setDisable(true);
+                    itemSeDeconnecter.setDisable(true);
+                    itemSeConnecter.setDisable(false);
+                    vueAccueil.setVisible(false);
+                    vueRapports.setVisible(false);
+                    vuePraticiens.setVisible(false);
+                }
             }
         });
         //Action sur le bouton Consulter
@@ -178,10 +191,26 @@ public class Appli extends Application {
         new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
                 primaryStage.setTitle("[Praticiens]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
-                vuePraticiens.toFront();
-                 vueAccueil.setVisible(false);
+                 vuePraticiens.toFront();
+                vueAccueil.setVisible(false);
                 vueRapports.setVisible(false);
                 vuePraticiens.setVisible(true);
+                
+                List<Praticien> praticiens ;
+                                
+                try {
+                    praticiens = ModeleGsbRv.getPraticiensHesitants();
+                    //System.out.println(praticiens.size());
+                    Collections.sort( praticiens, new ComparateurCoefConfiance() );
+                    for (Praticien unPraticien : praticiens){
+                        System.out.println(unPraticien);
+                    }
+                    
+                } catch (ConnexionException ex) {
+                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+                
             }
         });
          //Action sur le bouton Quitter
