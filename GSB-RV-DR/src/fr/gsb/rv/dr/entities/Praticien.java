@@ -18,7 +18,9 @@ public class Praticien {
     private double pra_coefnotoriete;
     private LocalDate pra_dateDernierVisite;
     private int dernierCoefConfiance;
+    private int dernierCoefNotoriete;
 
+    
     public Praticien(int pra_num, String pra_nom, String pra_ville, double pra_coefnotoriete, LocalDate pra_dateDernierVisite, int dernierCoefConfiance) {
         this.pra_num = pra_num;
         this.pra_nom = pra_nom;
@@ -26,6 +28,7 @@ public class Praticien {
         this.pra_coefnotoriete = pra_coefnotoriete;
         this.pra_dateDernierVisite = pra_dateDernierVisite;
         this.dernierCoefConfiance = dernierCoefConfiance;
+        
     }
 
     public Praticien(){
@@ -79,6 +82,15 @@ public class Praticien {
     public void setDernierCoefConfiance(int dernierCoefConfiance) {
         this.dernierCoefConfiance = dernierCoefConfiance;
     }
+    
+    public int getDernierCoefNotoriete() {
+        return dernierCoefNotoriete;
+    }
+
+    public void setDernierCoefNotoriete(int dernierCoefNotoriete) {
+        this.dernierCoefNotoriete = dernierCoefNotoriete;
+    }
+
 
     @Override
     public String toString() {

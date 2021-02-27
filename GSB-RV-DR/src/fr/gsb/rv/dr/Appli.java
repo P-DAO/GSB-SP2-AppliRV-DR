@@ -13,6 +13,7 @@ import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
+import fr.gsb.rv.dr.utilitaires.ComparateurCoefNotoriete;
 import fr.gsb.rv.dr.vues.PanneauAccueil;
 import fr.gsb.rv.dr.vues.PanneauPraticiens;
 import fr.gsb.rv.dr.vues.PanneauRapports;
@@ -191,7 +192,12 @@ public class Appli extends Application {
         new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
                 primaryStage.setTitle("[Praticiens]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
-                 vuePraticiens.toFront();
+                try {
+                    vuePraticiens.rafraichir();
+                } catch (ConnexionException ex) {
+                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                vuePraticiens.toFront();
                 vueAccueil.setVisible(false);
                 vueRapports.setVisible(false);
                 vuePraticiens.setVisible(true);
@@ -205,6 +211,15 @@ public class Appli extends Application {
                     for (Praticien unPraticien : praticiens){
                         System.out.println(unPraticien);
                     }
+                    /*Collections.sort( praticiens, new ComparateurCoefNotoriete() );
+                    for (Praticien unPraticien : praticiens){
+                        System.out.println(unPraticien);
+                    }*/
+                    /*Collections.sort( praticiens, new ComparateurDateVisite() );
+                    for (Praticien unPraticien : praticiens){
+                        System.out.println(unPraticien);
+                    }*/
+                    
                     
                 } catch (ConnexionException ex) {
                     Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);

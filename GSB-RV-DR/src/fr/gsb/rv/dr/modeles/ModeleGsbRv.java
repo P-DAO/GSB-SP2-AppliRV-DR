@@ -60,14 +60,19 @@ public class ModeleGsbRv {
         
         List<Praticien> praHesitant = new ArrayList<Praticien>();
         
-        /*String requete = ("SELECT max(rap_date_visite) as visite, p.pra_num, pra_nom, pra_ville, rap_coeff_confiance "
-                + "FROM Praticien p "
-                + "INNER JOIN RapportVisite rv "
-                + "ON p.pra_num=rv.pra_num "
-                + "WHERE rap_coeff_confiance<5 "
-                + "GROUP BY pra_nom");*/
+        String requete = "SELECT pra_nom, p.pra_num, pra_ville, pra_coefnotoriete, rv.rap_date_visite, rv.rap_confiance" +
+                "FROM praticien p" +
+                "INNER JOIN  rapportvisite rv ON p.pra_num = rv.pra_num" +
+                "WHERE rap_confiance < 5" +
+                "AND rv.rap_date_visite = (" +
+                "  SELECT MAX(rv2.rap_date_visite)" +
+                "  FROM rapportvisite rv2" +
+                "  WHERE rv.pra_num = rv2.pra_num" +
+                ")"+
+                "GROUP BY pra_prenom, pra_nom" +
+                "ORDER BY pra_nom";
         
-        String requete = ("select rap_date_visite, p.pra_num, pra_nom, pra_ville, rap_coeff_confiance "
+        /*String requete = ("select rap_date_visite, p.pra_num, pra_nom, pra_ville, rap_coeff_confiance "
                 + "from Praticien p "
                 + "inner join RapportVisite rv "
                 + "on p.pra_num=rv.pra_num, "
@@ -75,7 +80,7 @@ public class ModeleGsbRv {
                 + "from RapportVisite "
                 + "where rap_coeff_confiance <5 group by pra_num)as MAX "
                 + "where rv.rap_coeff_confiance=rap_coeff_confiance "
-                + "and rv.rap_date_visite=MAX.MAX_DATE");
+                + "and rv.rap_date_visite=MAX.MAX_DATE");*/
        
         
         try {
@@ -90,6 +95,9 @@ public class ModeleGsbRv {
                     praticien.setPra_ville(resultat.getString("pra_ville"));
                     praticien.setDernierCoefConfiance(resultat.getInt("rap_coeff_confiance"));
                     praticien.setPra_dateDernierVisite(Date.valueOf(resultat.getString("rap_date_visite")).toLocalDate());
+                    praticien.setPra_coefnotoriete(resultat.getDouble("pra_coefnotoriete"));
+                    praticien.setPra_dateDernierVisite(resultat.getDate("rap_date_visite").toLocalDate());
+                    praticien.setDernierCoefConfiance(resultat.getByte("rap_confiance"));
                     
                     praHesitant.add(praticien);
                     
