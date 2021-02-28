@@ -60,17 +60,17 @@ public class ModeleGsbRv {
         
         List<Praticien> praHesitant = new ArrayList<Praticien>();
         
-        String requete = "SELECT pra_nom, p.pra_num, pra_ville, pra_coefnotoriete, rv.rap_date_visite, rv.rap_confiance" +
-                "FROM praticien p" +
-                "INNER JOIN  rapportvisite rv ON p.pra_num = rv.pra_num" +
-                "WHERE rap_confiance < 5" +
-                "AND rv.rap_date_visite = (" +
-                "  SELECT MAX(rv2.rap_date_visite)" +
-                "  FROM rapportvisite rv2" +
-                "  WHERE rv.pra_num = rv2.pra_num" +
-                ")"+
-                "GROUP BY pra_prenom, pra_nom" +
-                "ORDER BY pra_nom";
+        String requete = "SELECT pra_nom, p.pra_num, pra_ville, pra_coefnotoriete, rv.rap_date_visite, rv.rap_coeff_confiance" 
+                + "FROM Praticien p " 
+                + "INNER JOIN  RapportVisite rv ON p.pra_num = rv.pra_num " 
+                + "WHERE rap_coeff_confiance < 5 " 
+                + "AND rv.rap_date_visite = (" 
+                + "  SELECT MAX(rv2.rap_date_visite) " 
+                + "  FROM RapportVisite rv2 " 
+                + "  WHERE rv.pra_num = rv2.pra_num " 
+                + ")"
+                + "GROUP BY pra_prenom, pra_nom "
+                + "ORDER BY pra_nom ";
         
         /*String requete = ("select rap_date_visite, p.pra_num, pra_nom, pra_ville, rap_coeff_confiance "
                 + "from Praticien p "

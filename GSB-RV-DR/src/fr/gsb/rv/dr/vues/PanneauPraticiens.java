@@ -100,8 +100,6 @@ public class PanneauPraticiens extends Pane{
         
         praVBox.getChildren().add(tabPraticiens);
         
-        this.getChildren().add(praVBox) ;
-        
         //Ecouteurs d'évènements
         rbCoefConfiance.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -142,6 +140,8 @@ public class PanneauPraticiens extends Pane{
                 }
             }
         });
+        
+        this.getChildren().add(praVBox) ;
         
     }
     

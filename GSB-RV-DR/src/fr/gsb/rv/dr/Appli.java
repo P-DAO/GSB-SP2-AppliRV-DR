@@ -14,6 +14,7 @@ import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefNotoriete;
+import fr.gsb.rv.dr.utilitaires.ComparateurDateVisiteur;
 import fr.gsb.rv.dr.vues.PanneauAccueil;
 import fr.gsb.rv.dr.vues.PanneauPraticiens;
 import fr.gsb.rv.dr.vues.PanneauRapports;
@@ -137,7 +138,7 @@ public class Appli extends Application {
                         itemSeConnecter.setDisable(true);
                         primaryStage.setTitle(Session.getSession().getLeVisiteur().getVis_nom() + " " + Session.getSession().getLeVisiteur().getVis_prenom());
                         vueAccueil.setVisible(true);
-                        
+                        vuePraticiens.setCritereTri(PanneauPraticiens.CRITERE_COEF_CONFIANCE);                        
                     }
                    else{
                         Alert alertError = new Alert(Alert.AlertType.ERROR);
@@ -162,6 +163,7 @@ public class Appli extends Application {
                 ButtonType btnOui = new ButtonType("Oui");
                 ButtonType btnNon = new ButtonType("Non");
                 alertQuitter.getButtonTypes().setAll(btnOui, btnNon);
+                vuePraticiens.setCritereTri(PanneauPraticiens.CRITERE_COEF_CONFIANCE);
                 Optional<ButtonType>reponse = alertQuitter.showAndWait();
                 if (reponse.get() == btnOui){   
                     Session.fermer();
@@ -192,12 +194,12 @@ public class Appli extends Application {
         new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
                 primaryStage.setTitle("[Praticiens]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
+                vuePraticiens.toFront();
                 try {
                     vuePraticiens.rafraichir();
                 } catch (ConnexionException ex) {
                     Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                vuePraticiens.toFront();
                 vueAccueil.setVisible(false);
                 vueRapports.setVisible(false);
                 vuePraticiens.setVisible(true);
@@ -209,16 +211,16 @@ public class Appli extends Application {
                     //System.out.println(praticiens.size());
                     Collections.sort( praticiens, new ComparateurCoefConfiance() );
                     for (Praticien unPraticien : praticiens){
-                        System.out.println(unPraticien);
+                        System.out.println(unPraticien.getDernierCoefConfiance());
                     }
-                    /*Collections.sort( praticiens, new ComparateurCoefNotoriete() );
+                    Collections.sort( praticiens, new ComparateurCoefNotoriete() );
                     for (Praticien unPraticien : praticiens){
-                        System.out.println(unPraticien);
-                    }*/
-                    /*Collections.sort( praticiens, new ComparateurDateVisite() );
+                        System.out.println(unPraticien.getDernierCoefNotoriete());
+                    }
+                    Collections.sort( praticiens, new ComparateurDateVisiteur() );
                     for (Praticien unPraticien : praticiens){
-                        System.out.println(unPraticien);
-                    }*/
+                        System.out.println(unPraticien.getPra_dateDernierVisite());
+                    }
                     
                     
                 } catch (ConnexionException ex) {
