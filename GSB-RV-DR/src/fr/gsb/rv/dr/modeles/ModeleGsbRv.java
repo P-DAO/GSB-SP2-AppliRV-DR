@@ -69,7 +69,7 @@ public class ModeleGsbRv {
                 + "  FROM RapportVisite rv2 " 
                 + "  WHERE rv.pra_num = rv2.pra_num " 
                 + ") "
-                + "GROUP BY pra_prenom, pra_nom " 
+                + "GROUP BY pra_prenom, pra_nom "
                 + "ORDER BY pra_nom ";
         
         /*String requete = ("select rap_date_visite, p.pra_num, pra_nom, pra_ville, rap_coeff_confiance "
