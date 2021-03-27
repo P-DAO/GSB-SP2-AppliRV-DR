@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -27,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -82,6 +84,9 @@ public class PanneauPraticiens extends Pane{
         grilleRadio.add(rbCoefNotoriete, 1, 0);
         grilleRadio.add(rbDateVisite, 2, 0);
         praVBox.getChildren().add(grilleRadio);
+        /*HBox hBox = new HBox(20, rbCoefConfiance, rbCoefNotoriete, rbDateVisite);
+        grilleRadio.add(hBox, 10, 10);
+        praVBox.getChildren().add(grilleRadio);*/
         
         //Création des Colonnes tabPraticien
         TableColumn<Praticien, Integer> colNumero = new TableColumn<Praticien, Integer>( "Numéro" );
@@ -99,8 +104,6 @@ public class PanneauPraticiens extends Pane{
         tabPraticiens.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
         praVBox.getChildren().add(tabPraticiens);
-        
-        this.getChildren().add(praVBox) ;
         
         //Ecouteurs d'évènements
         rbCoefConfiance.setOnAction(new EventHandler<ActionEvent>() {
@@ -143,6 +146,8 @@ public class PanneauPraticiens extends Pane{
             }
         });
         
+        this.getChildren().add(praVBox) ;
+        
     }
     
     public void rafraichir() throws ConnexionException{
@@ -150,21 +155,26 @@ public class PanneauPraticiens extends Pane{
             //Obtenir la liste des Praticiens
             List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
             
+            //Convertir la listepraticiens hesitantd en liste observable
+            ObservableList<Praticien> obListPra = FXCollections.observableArrayList(praticiens);
+            
             //Traitements spécifiques au 3 critères de tri
             if(critereTri == CRITERE_COEF_CONFIANCE){
                 Collections.sort(praticiens, new ComparateurCoefConfiance() );
+                //tabPraticiens.setItems(obListPra);
             }
             else if(critereTri == CRITERE_COEF_NOTORIETE){
                 Collections.sort(praticiens, new ComparateurCoefNotoriete() );
                 Collections.reverse(praticiens);
+                //tabPraticiens.setItems(obListPra);
+
             }
             else{
                 Collections.sort(praticiens, new ComparateurDateVisiteur() );
                 Collections.reverse(praticiens);
+                //tabPraticiens.setItems(obListPra);
+
             }
-            
-            //Convertir la listepraticiens hesitantd en liste observable
-            ObservableList<Praticien> obListPra = FXCollections.observableArrayList(praticiens);
             
             //Ajouter listObservable à la tabPraticiens
             tabPraticiens.getItems().clear();

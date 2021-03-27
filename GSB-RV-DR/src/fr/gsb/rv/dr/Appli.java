@@ -14,6 +14,7 @@ import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefNotoriete;
+import fr.gsb.rv.dr.utilitaires.ComparateurDateVisiteur;
 import fr.gsb.rv.dr.vues.PanneauAccueil;
 import fr.gsb.rv.dr.vues.PanneauPraticiens;
 import fr.gsb.rv.dr.vues.PanneauRapports;
@@ -39,6 +40,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 
 /**
@@ -51,7 +53,6 @@ public class Appli extends Application {
     PanneauAccueil vueAccueil = new PanneauAccueil();    
     PanneauRapports vueRapports = new PanneauRapports();
     PanneauPraticiens vuePraticiens = new PanneauPraticiens() ; 
-    
     
     @Override
     public void start(Stage primaryStage) throws ConnexionException {
@@ -180,7 +181,7 @@ public class Appli extends Application {
         itemConsulter.setOnAction(
         new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
-                primaryStage.setTitle("[Rapports]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
+                //primaryStage.setTitle("[Rapports]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
                 vueRapports.toFront();
                 vueAccueil.setVisible(false);
                 vueRapports.setVisible(true);
@@ -192,12 +193,12 @@ public class Appli extends Application {
         new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
                 primaryStage.setTitle("[Praticiens]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
+                vuePraticiens.toFront();
                 try {
                     vuePraticiens.rafraichir();
                 } catch (ConnexionException ex) {
                     Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                vuePraticiens.toFront();
                 vueAccueil.setVisible(false);
                 vueRapports.setVisible(false);
                 vuePraticiens.setVisible(true);
@@ -211,14 +212,14 @@ public class Appli extends Application {
                     for (Praticien unPraticien : praticiens){
                         System.out.println(unPraticien);
                     }
-                    /*Collections.sort( praticiens, new ComparateurCoefNotoriete() );
+                    Collections.sort( praticiens, new ComparateurCoefNotoriete() );
                     for (Praticien unPraticien : praticiens){
                         System.out.println(unPraticien);
-                    }*/
-                    /*Collections.sort( praticiens, new ComparateurDateVisite() );
+                    }
+                    Collections.sort( praticiens, new ComparateurDateVisiteur() );
                     for (Praticien unPraticien : praticiens){
                         System.out.println(unPraticien);
-                    }*/
+                    }
                     
                     
                 } catch (ConnexionException ex) {
