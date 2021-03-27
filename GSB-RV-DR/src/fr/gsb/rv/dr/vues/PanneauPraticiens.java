@@ -13,6 +13,7 @@ import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefNotoriete;
 import fr.gsb.rv.dr.utilitaires.ComparateurDateVisiteur;
 import java.awt.Insets;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -106,17 +107,16 @@ public class PanneauPraticiens extends Pane{
         praVBox.getChildren().add(tabPraticiens);
         
         //Ecouteurs d'évènements
-        rbCoefConfiance.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        rbCoefConfiance.setOnAction((ActionEvent)->{
                 //Mémorisation du critère de tri sélectionné
                 setCritereTri(CRITERE_COEF_CONFIANCE);
-                try {
-                    //Rafraîchissement de la liste
-                    rafraichir();
-                } catch (ConnexionException ex) {
-                    Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                //Rafraîchissement de la liste
+                rafraichir();
+            } catch (ConnexionException ex) {
+                Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         rbCoefNotoriete.setOnAction(new EventHandler<ActionEvent>() {
@@ -128,6 +128,8 @@ public class PanneauPraticiens extends Pane{
                     //Rafraîchissement de la liste
                     rafraichir();
                 } catch (ConnexionException ex) {
+                    Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
                     Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -142,6 +144,8 @@ public class PanneauPraticiens extends Pane{
                     rafraichir();
                 } catch (ConnexionException ex) {
                     Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -150,7 +154,7 @@ public class PanneauPraticiens extends Pane{
         
     }
     
-    public void rafraichir() throws ConnexionException{
+    public void rafraichir() throws ConnexionException, SQLException{
         try{
             //Obtenir la liste des Praticiens
             List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
@@ -161,27 +165,29 @@ public class PanneauPraticiens extends Pane{
             //Traitements spécifiques au 3 critères de tri
             if(critereTri == CRITERE_COEF_CONFIANCE){
                 Collections.sort(praticiens, new ComparateurCoefConfiance() );
-                //tabPraticiens.setItems(obListPra);
+                tabPraticiens.setItems(obListPra);
             }
             else if(critereTri == CRITERE_COEF_NOTORIETE){
                 Collections.sort(praticiens, new ComparateurCoefNotoriete() );
                 Collections.reverse(praticiens);
-                //tabPraticiens.setItems(obListPra);
+                tabPraticiens.setItems(obListPra);
 
             }
             else{
                 Collections.sort(praticiens, new ComparateurDateVisiteur() );
                 Collections.reverse(praticiens);
-                //tabPraticiens.setItems(obListPra);
+                tabPraticiens.setItems(obListPra);
 
             }
             
             //Ajouter listObservable à la tabPraticiens
-            tabPraticiens.getItems().clear();
-            tabPraticiens.getItems().addAll(obListPra);
+            /*tabPraticiens.getItems().clear();
+            tabPraticiens.getItems().addAll(obListPra);*/
             
         }catch(ConnexionException ex){
             Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (SQLException ex) {
+                    Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }

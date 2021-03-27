@@ -19,6 +19,7 @@ import fr.gsb.rv.dr.vues.PanneauAccueil;
 import fr.gsb.rv.dr.vues.PanneauPraticiens;
 import fr.gsb.rv.dr.vues.PanneauRapports;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -182,7 +183,7 @@ public class Appli extends Application {
         itemConsulter.setOnAction(
         new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
-                //primaryStage.setTitle("[Rapports]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
+                primaryStage.setTitle("[Rapports]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
                 vueRapports.toFront();
                 vueAccueil.setVisible(false);
                 vueRapports.setVisible(true);
@@ -199,6 +200,8 @@ public class Appli extends Application {
                     vuePraticiens.rafraichir();
                 } catch (ConnexionException ex) {
                     Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 vueAccueil.setVisible(false);
                 vueRapports.setVisible(false);
@@ -214,17 +217,20 @@ public class Appli extends Application {
                         System.out.println(unPraticien.getDernierCoefConfiance());
                     }
                     Collections.sort( praticiens, new ComparateurCoefNotoriete() );
+                    Collections.reverse(praticiens);
                     for (Praticien unPraticien : praticiens){
                         //System.out.println(unPraticien);
                         System.out.println(unPraticien.getDernierCoefNotoriete());
                     }
                     Collections.sort( praticiens, new ComparateurDateVisiteur() );
+                    Collections.reverse(praticiens);
+
                     for (Praticien unPraticien : praticiens){
                         System.out.println(unPraticien.getPra_dateDernierVisite());
                     }
                     
                     
-                } catch (ConnexionException ex) {
+                } catch (ConnexionException | SQLException ex) {
                     Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
                 }
                

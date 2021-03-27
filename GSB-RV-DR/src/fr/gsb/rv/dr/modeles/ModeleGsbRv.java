@@ -54,7 +54,7 @@ public class ModeleGsbRv {
         } 
     }
     
-    public static List<Praticien> getPraticiensHesitants() throws ConnexionException{
+    public static List<Praticien> getPraticiensHesitants() throws ConnexionException, SQLException{
         
         Connection connexion = ConnexionBD.getConnexion();
         
