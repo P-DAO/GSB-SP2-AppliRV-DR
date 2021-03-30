@@ -52,7 +52,7 @@ public class PanneauPraticiens extends Pane{
     private RadioButton rbDateVisite = new RadioButton("Date Visite");
     
     //Création de la tableView
-    private TableView<Praticien> tabPraticiens = new TableView();
+    private TableView<Praticien> tabPraticiens = new TableView<Praticien>();
     
     public PanneauPraticiens (){
         //Boîte verticale (Vbox) avec le Label
@@ -91,13 +91,13 @@ public class PanneauPraticiens extends Pane{
         
         //Création des Colonnes tabPraticien
         TableColumn<Praticien, Integer> colNumero = new TableColumn<Praticien, Integer>( "Numéro" );
-        TableColumn<Praticien, Integer> colNom = new TableColumn<Praticien, Integer>( "Nom" );
-        TableColumn<Praticien, Integer> colVille = new TableColumn<Praticien, Integer>( "Ville" );
+        TableColumn<Praticien, String> colNom = new TableColumn<Praticien, String>( "Nom" );
+        TableColumn<Praticien, String> colVille = new TableColumn<Praticien, String>( "Ville" );
         
         //Observation pour MAJ
-        colNumero.setCellValueFactory( new PropertyValueFactory<>( "numero" ) );
-        colNom.setCellValueFactory( new PropertyValueFactory<>( "nom" ) );
-        colVille.setCellValueFactory( new PropertyValueFactory<>( "ville" ) );
+        colNumero.setCellValueFactory( new PropertyValueFactory<>( "pra_num" ) );
+        colNom.setCellValueFactory( new PropertyValueFactory<>( "pra_nom" ) );
+        colVille.setCellValueFactory( new PropertyValueFactory<>( "pra_ville" ) );
         
         //Ajouter colonne à la tabPraticien
         tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
@@ -151,16 +151,34 @@ public class PanneauPraticiens extends Pane{
         });
         
         this.getChildren().add(praVBox) ;
+        setCritereTri(CRITERE_DATE_VISITE);
+        try {
+            this.rafraichir() ;
+        } catch(Exception e){
+            System.out.println( "Pb" ) ;
+        }
         
     }
     
     public void rafraichir() throws ConnexionException, SQLException{
         try{
+            //System.out.println( "PanPrat::raf" ) ; ---->test pour trouver erreur d'affichage
+            
             //Obtenir la liste des Praticiens
             List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
             
+            /*for( Praticien p : praticiens ){      ---->test pour trouver erreur d'affichage
+                System.out.println( "> " + p  ) ;
+            }*/
+            
             //Convertir la listepraticiens hesitantd en liste observable
             ObservableList<Praticien> obListPra = FXCollections.observableArrayList(praticiens);
+            
+            /*System.out.println( "T> " + obListPra.size() ) ;---->test pour trouver erreur d'affichage
+            
+            tabPraticiens.setItems(obListPra);
+            tabPraticiens.refresh();*/
+            
             
             //Traitements spécifiques au 3 critères de tri
             if(critereTri == CRITERE_COEF_CONFIANCE){
@@ -179,6 +197,9 @@ public class PanneauPraticiens extends Pane{
                 tabPraticiens.setItems(obListPra);
 
             }
+            
+            tabPraticiens.refresh();
+           
             
             //Ajouter listObservable à la tabPraticiens
             /*tabPraticiens.getItems().clear();

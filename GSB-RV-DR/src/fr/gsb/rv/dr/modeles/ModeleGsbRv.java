@@ -99,6 +99,8 @@ public class ModeleGsbRv {
                     praticien.setPra_dateDernierVisite(resultat.getDate("rap_date_visite").toLocalDate());
                     praticien.setDernierCoefConfiance(resultat.getByte("rap_coeff_confiance"));
                     
+                   System.out.println( praticien ) ;
+                    
                     praHesitant.add(praticien);
                     
                 }while( resultat.next() == true );
