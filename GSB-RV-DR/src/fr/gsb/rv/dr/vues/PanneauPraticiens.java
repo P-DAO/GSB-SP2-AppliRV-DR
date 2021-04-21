@@ -12,7 +12,6 @@ import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
 import fr.gsb.rv.dr.utilitaires.ComparateurCoefNotoriete;
 import fr.gsb.rv.dr.utilitaires.ComparateurDateVisiteur;
-import java.awt.Insets;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -39,6 +39,13 @@ import javafx.scene.layout.VBox;
  * @author developpeur
  */
 public class PanneauPraticiens extends Pane{
+    /*public PanneauPraticiens () {
+        Label praLabel = new Label("Praticiens");
+        VBox praVBox = new VBox();
+        praVBox.getChildren().add(praLabel);
+        praVBox.setStyle("-fx-background-color:white;");
+        this.getChildren().add(praVBox);
+    }*/
     
     public static int CRITERE_COEF_CONFIANCE = 1;
     public static int CRITERE_COEF_NOTORIETE = 2;
@@ -59,7 +66,7 @@ public class PanneauPraticiens extends Pane{
         VBox praVBox = new VBox();
         praVBox.setStyle("-fx-background-color: white;");
         praVBox.setSpacing(10);
-        //praVBox.setPadding(new Insets(10, 10, 10, 10));
+        praVBox.setPadding(new Insets(10, 410, 10, 10));
         Label selectionTri = new Label("Sélectionner un critère de tri");
         selectionTri.setStyle("-fx-font-weight: bold");
         praVBox.getChildren().add(selectionTri);
@@ -94,6 +101,11 @@ public class PanneauPraticiens extends Pane{
         TableColumn<Praticien, String> colNom = new TableColumn<Praticien, String>( "Nom" );
         TableColumn<Praticien, String> colVille = new TableColumn<Praticien, String>( "Ville" );
         
+        //Taille des colonnes
+        colNumero.setMinWidth(150);
+        colNom.setMinWidth(150);
+        colVille.setMinWidth(150);
+
         //Observation pour MAJ
         colNumero.setCellValueFactory( new PropertyValueFactory<>( "pra_num" ) );
         colNom.setCellValueFactory( new PropertyValueFactory<>( "pra_nom" ) );
@@ -109,7 +121,8 @@ public class PanneauPraticiens extends Pane{
         //Ecouteurs d'évènements
         rbCoefConfiance.setOnAction((ActionEvent)->{
                 //Mémorisation du critère de tri sélectionné
-                setCritereTri(CRITERE_COEF_CONFIANCE);
+                //setCritereTri(CRITERE_COEF_CONFIANCE);
+                critereTri = CRITERE_COEF_CONFIANCE;
             try {
                 //Rafraîchissement de la liste
                 rafraichir();
@@ -124,7 +137,8 @@ public class PanneauPraticiens extends Pane{
             public void handle(ActionEvent event) {
                 try {
                     //Mémorisation du critère de tri sélectionné
-                    setCritereTri(CRITERE_COEF_NOTORIETE);
+                    //setCritereTri(CRITERE_COEF_NOTORIETE);
+                    critereTri = CRITERE_COEF_NOTORIETE;
                     //Rafraîchissement de la liste
                     rafraichir();
                 } catch (ConnexionException ex) {
@@ -138,7 +152,8 @@ public class PanneauPraticiens extends Pane{
             @Override
             public void handle(ActionEvent event) {
                 //Mémorisation du critère de tri sélectionné
-                setCritereTri(CRITERE_DATE_VISITE);
+                //setCritereTri(CRITERE_DATE_VISITE);
+                critereTri = CRITERE_DATE_VISITE;
                 try {
                     //Rafraîchissement de la liste
                     rafraichir();
@@ -183,21 +198,21 @@ public class PanneauPraticiens extends Pane{
             //Traitements spécifiques au 3 critères de tri
             if(critereTri == CRITERE_COEF_CONFIANCE){
                 Collections.sort(praticiens, new ComparateurCoefConfiance() );
-                tabPraticiens.setItems(obListPra);
+                //tabPraticiens.setItems(obListPra);
             }
             else if(critereTri == CRITERE_COEF_NOTORIETE){
                 Collections.sort(praticiens, new ComparateurCoefNotoriete() );
                 Collections.reverse(praticiens);
-                tabPraticiens.setItems(obListPra);
+                //tabPraticiens.setItems(obListPra);
 
             }
             else{
                 Collections.sort(praticiens, new ComparateurDateVisiteur() );
                 Collections.reverse(praticiens);
-                tabPraticiens.setItems(obListPra);
+                //tabPraticiens.setItems(obListPra);
 
             }
-            
+            tabPraticiens.setItems(obListPra);
             tabPraticiens.refresh();
            
             
@@ -219,7 +234,7 @@ public class PanneauPraticiens extends Pane{
     
     public void setCritereTri(int critereTri){
         this.critereTri = critereTri;
-        if(critereTri == CRITERE_COEF_CONFIANCE){
+        /*if(critereTri == CRITERE_COEF_CONFIANCE){
             rbCoefConfiance.setSelected(true);
         }
         else if(critereTri == CRITERE_COEF_NOTORIETE){
@@ -227,7 +242,6 @@ public class PanneauPraticiens extends Pane{
         }
         else{
             rbDateVisite.setSelected(true);
-        }
-    }
-    
+        }*/
+    }   
 }

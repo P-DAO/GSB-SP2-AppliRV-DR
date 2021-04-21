@@ -16,10 +16,10 @@ public class ComparateurCoefNotoriete implements Comparator<Praticien>{
     
     public int compare( Praticien o1, Praticien o2){
         
-        if( o1.getDernierCoefNotoriete() == o2.getDernierCoefNotoriete()){
+        if( o1.getPra_coefnotoriete() == o2.getPra_coefnotoriete()){
             return 0;
         }
-        else if( o1.getDernierCoefNotoriete() > o2.getDernierCoefNotoriete()){
+        else if( o1.getPra_coefnotoriete() > o2.getPra_coefnotoriete()){
             return 1;
         }
         else{

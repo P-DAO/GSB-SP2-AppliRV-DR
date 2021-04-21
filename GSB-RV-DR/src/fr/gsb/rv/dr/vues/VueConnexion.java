@@ -59,12 +59,14 @@ public class VueConnexion extends Dialog<Pair<String, String>>{
    
         setResultConverter(
             new Callback<ButtonType, Pair<String, String>>(){
-            public Pair<String, String> call (ButtonType typeBouton){
-                if ( typeBouton == seCo){
-                    return new Pair<String, String> (matricule.getText(), mdp.getText());
+                @Override
+                public Pair<String, String> call (ButtonType typeBouton){
+                    if ( typeBouton == seCo){
+                        return new Pair<String, String> (matricule.getText(), mdp.getText());
+                    }
+                    return null;
                 }
-                return null;
             }
-        });
+        );
     }
 }

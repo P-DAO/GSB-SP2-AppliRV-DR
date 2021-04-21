@@ -60,7 +60,18 @@ public class ModeleGsbRv {
         
         List<Praticien> praHesitant = new ArrayList<Praticien>();
         
-        String requete = "SELECT pra_nom, p.pra_num, pra_ville, pra_coefnotoriete, rv.rap_date_visite, rv.rap_coeff_confiance " 
+        String requete = "SELECT p.pra_num, pra_nom, pra_prenom, pra_ville, pra_coefnotoriete, rap_date_visite, rap_coeff_confiance "
+                + "FROM Praticien p "
+                + "INNER JOIN RapportVisite r "
+                + "ON p.pra_num = r.pra_num "
+                + "WHERE rap_coeff_confiance <5 "
+                + "AND rap_date_visite = ( "
+                + "     SELECT MAX(rap_date_visite) "
+                + "     FROM RapportVisite r2 "
+                + "     WHERE r.pra_num = r2.pra_num "
+                + ")";
+        
+        /*String requete = "SELECT pra_nom, p.pra_num, pra_ville, pra_coefnotoriete, rv.rap_date_visite, rv.rap_coeff_confiance " 
                 + "FROM Praticien p " 
                 + "INNER JOIN  RapportVisite rv ON p.pra_num = rv.pra_num " 
                 + "WHERE rap_coeff_confiance < 5 " 
@@ -70,18 +81,7 @@ public class ModeleGsbRv {
                 + "  WHERE rv.pra_num = rv2.pra_num " 
                 + ") "
                 + "GROUP BY pra_prenom, pra_nom "
-                + "ORDER BY pra_nom ";
-        
-        /*String requete = ("select rap_date_visite, p.pra_num, pra_nom, pra_ville, rap_coeff_confiance "
-                + "from Praticien p "
-                + "inner join RapportVisite rv "
-                + "on p.pra_num=rv.pra_num, "
-                + "(select max(rap_date_visite) as MAX_DATE "
-                + "from RapportVisite "
-                + "where rap_coeff_confiance <5 group by pra_num)as MAX "
-                + "where rv.rap_coeff_confiance=rap_coeff_confiance "
-                + "and rv.rap_date_visite=MAX.MAX_DATE");*/
-       
+                + "ORDER BY pra_nom "; */   
         
         try {
             PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement( requete ) ;
@@ -93,11 +93,10 @@ public class ModeleGsbRv {
                     praticien.setPra_num(resultat.getInt("pra_num"));
                     praticien.setPra_nom(resultat.getString("pra_nom"));
                     praticien.setPra_ville(resultat.getString("pra_ville"));
-                    praticien.setDernierCoefConfiance(resultat.getInt("rap_coeff_confiance"));
-                    praticien.setPra_dateDernierVisite(Date.valueOf(resultat.getString("rap_date_visite")).toLocalDate());
                     praticien.setPra_coefnotoriete(resultat.getDouble("pra_coefnotoriete"));
-                    praticien.setPra_dateDernierVisite(resultat.getDate("rap_date_visite").toLocalDate());
-                    praticien.setDernierCoefConfiance(resultat.getByte("rap_coeff_confiance"));
+                    praticien.setDernierCoefConfiance(resultat.getInt("rap_coeff_confiance"));
+                    //praticien.setPra_dateDerniereVisite(Date.valueOf(resultat.getString("rap_date_visite")).toLocalDate());
+                    praticien.setPra_dateDerniereVisite(resultat.getDate("rap_date_visite").toLocalDate());
                     
                    System.out.println( praticien ) ;
                     

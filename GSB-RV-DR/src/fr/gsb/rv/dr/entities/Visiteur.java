@@ -19,7 +19,7 @@ public class Visiteur {
     private String vis_cp;
     private String vis_ville ;
     private Date vis_dateembauche; 
-    private  String sec_code;
+    private String sec_code;
     private String lab_code;
     private String vis_mdp;
 
@@ -111,17 +111,13 @@ public class Visiteur {
     public void setLab_code(String lab_code) {
         this.lab_code = lab_code;
     }
+    
+    public String getSec_code() {
+        return sec_code;
+    }
 
     public void setSec_code(String sec_code) {
         this.sec_code = sec_code;
-    }
-
-    public String getVis_mdp() {
-        return vis_mdp;
-    }
-
-    public String getSec_code() {
-        return sec_code;
     }
     
     public void setVis_mdp(String vis_mdp) {
@@ -132,11 +128,5 @@ public class Visiteur {
     public String toString() {
         return super.toString(); //To change body of generated methods, choose Tools | Templates.
     }
-
-    
-
-    
-    
-    
     
 }
