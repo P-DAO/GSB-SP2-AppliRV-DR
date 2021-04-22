@@ -151,7 +151,7 @@ public class ModeleGsbRv {
         }      
     }
     
-    public static List<RapportVisite> getRapportsVisite(String matricule, String mois, String annee) throws ConnexionException, SQLException {
+    public static List<RapportVisite> getRapportsVisite(String matricule, int mois, int annee) throws ConnexionException, SQLException {
         Connection connexion = ConnexionBD.getConnexion();
         
         List<RapportVisite> listRapVis = new ArrayList<>();
@@ -159,7 +159,7 @@ public class ModeleGsbRv {
         String requete = "SELECT r.vis_matricule,rap_num, rap_date_visite, rap_bilan, rap_date_saisie, rap_coeff_confiance, rap_lu, pra_num, motif_libelle "
                 + "FROM RapportVisite r "
                 + "INNER JOIN Motif_visite mv "
-                + "ON r.motif_num = mv.motif_num"
+                + "ON r.motif_num = mv.motif_num "
                 + "INNER JOIN Visiteur v "
                 + "ON v.vis_matricule = r.vis_matricule "
                 + "WHERE r.vis_matricule = ? "
@@ -170,8 +170,8 @@ public class ModeleGsbRv {
             PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
             
             requetePreparee.setString( 1 , matricule);
-            requetePreparee.setString(2, mois);
-            requetePreparee.setString(3, annee);
+            requetePreparee.setInt(2, mois);
+            requetePreparee.setInt(3, annee);
 
             ResultSet resultat = requetePreparee.executeQuery();
             
@@ -227,7 +227,7 @@ public class ModeleGsbRv {
     public static Visiteur getUnVisiteur(String matricule) throws ConnexionException, SQLException{
         Connection connexion = ConnexionBD.getConnexion();
         
-        String requeteVis = "SELECT vis_matricule, vis_nom, vi_sprenom "
+        String requeteVis = "SELECT vis_matricule, vis_nom, vis_prenom "
                 + "FROM Visiteur "
                 + "WHERE vis_matricule = ?";
         

@@ -6,6 +6,7 @@
 package fr.gsb.rv.dr;
 
 import fr.gsb.rv.dr.entities.Praticien;
+import fr.gsb.rv.dr.entities.RapportVisite;
 import fr.gsb.rv.dr.vues.VueConnexion;
 import fr.gsb.rv.dr.entities.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
@@ -20,6 +21,7 @@ import fr.gsb.rv.dr.vues.PanneauPraticiens;
 import fr.gsb.rv.dr.vues.PanneauRapports;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -154,6 +156,7 @@ public class Appli extends Application {
                 Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
         //Action sur le bouton SeDeconnecter
         itemSeDeconnecter.setOnAction(
         new EventHandler<ActionEvent>(){
@@ -183,6 +186,26 @@ public class Appli extends Application {
         itemConsulter.setOnAction(
         new EventHandler<ActionEvent>(){
             public void handle(ActionEvent event){
+                /*---> Test de la fonction getRapportVisite() / getVisiteur 
+                List<RapportVisite> rapp = new ArrayList<>();
+                try {
+                    rapp = ModeleGsbRv.getRapportsVisite("a131", 05, 2018);
+                } catch (ConnexionException ex) {
+                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println(rapp);
+                List<Visiteur> visiteurs = new ArrayList<>();
+                try {
+                    visiteurs = ModeleGsbRv.getVisiteurs();
+                } catch (ConnexionException ex) {
+                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println(visiteurs);*/
+                
                 primaryStage.setTitle("[Rapports]" + " " +Session.getSession().getLeVisiteur().getVis_nom() + " "+ Session.getSession().getLeVisiteur().getVis_prenom());
                 vueRapports.toFront();
                 vueAccueil.setVisible(false);

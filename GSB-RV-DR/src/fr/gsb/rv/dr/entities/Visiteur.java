@@ -129,7 +129,9 @@ public class Visiteur {
 
     @Override
     public String toString() {
-        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+        return vis_nom.toUpperCase()+" "+ vis_prenom + " (" + vis_matricule + " )";
     }
+
+    
     
 }
