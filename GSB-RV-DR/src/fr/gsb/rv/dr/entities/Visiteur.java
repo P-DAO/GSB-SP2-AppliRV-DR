@@ -37,17 +37,20 @@ public class Visiteur {
     }
     
     public Visiteur(){
+        
     }
     
-     public Visiteur(String vis_matricule, String vis_nom, String vis_prenom){
-         this.vis_matricule = vis_matricule;
-         this.vis_nom = vis_nom;
-         this.vis_prenom = vis_prenom;
-     }
-     public Visiteur(String vis_matricule, String vis_mdp){
-         this.vis_matricule = vis_matricule;
-         this.vis_mdp = vis_mdp;
-     }
+    //Constructeur pour table réactive
+    public Visiteur(String vis_matricule, String vis_nom, String vis_prenom){
+        this.vis_matricule = vis_matricule;
+        this.vis_nom = vis_nom;
+        this.vis_prenom = vis_prenom;
+    }
+    
+    public Visiteur(String vis_matricule, String vis_mdp){
+        this.vis_matricule = vis_matricule;
+        this.vis_mdp = vis_mdp;
+    }
 
     public String getVis_matricule() {
         return vis_matricule;

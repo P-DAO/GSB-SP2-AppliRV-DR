@@ -18,6 +18,10 @@ public class Praticien {
     private double pra_coefnotoriete;
     private LocalDate pra_dateDerniereVisite;
     private int dernierCoefConfiance;
+    //Table réactive
+    private String pra_adresse;
+    private String pra_cp;
+    private String pra_prenom;
 
     
     public Praticien(int pra_num, String pra_nom, String pra_ville, double pra_coefnotoriete, LocalDate pra_dateDerniereVisite, int dernierCoefConfiance) {
@@ -28,6 +32,19 @@ public class Praticien {
         this.pra_dateDerniereVisite = pra_dateDerniereVisite;
         this.dernierCoefConfiance = dernierCoefConfiance;
         
+    }
+    
+    //constructeur table réactive
+    public Praticien (int pra_num, String pra_nom, String pra_ville, double pra_coefnotoriete, LocalDate pra_dateDerniereVisite, int dernierCoefConfiance, String pra_adresse, String pra_cp, String pra_prenom){
+        this.pra_num = pra_num;
+        this.pra_nom = pra_nom;
+        this.pra_ville = pra_ville;
+        this.pra_coefnotoriete = pra_coefnotoriete;
+        this.pra_dateDerniereVisite = pra_dateDerniereVisite;
+        this.dernierCoefConfiance = dernierCoefConfiance;
+        this.pra_adresse = pra_adresse;
+        this.pra_cp = pra_cp;
+        this.pra_prenom = pra_prenom;
     }
 
     public Praticien(){
