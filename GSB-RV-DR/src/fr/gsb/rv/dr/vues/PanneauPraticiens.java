@@ -110,7 +110,7 @@ public class PanneauPraticiens extends Pane{
         colNumero.setCellValueFactory( new PropertyValueFactory<>( "pra_num" ) );
         colNom.setCellValueFactory( new PropertyValueFactory<>( "pra_nom" ) );
         colVille.setCellValueFactory( new PropertyValueFactory<>( "pra_ville" ) );
-        
+
         //Ajouter colonne à la tabPraticien
         tabPraticiens.getColumns().addAll(colNumero, colNom, colVille);
         
@@ -182,33 +182,32 @@ public class PanneauPraticiens extends Pane{
             //Obtenir la liste des Praticiens
             List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
             
-            /*for( Praticien p : praticiens ){      ---->test pour trouver erreur d'affichage
+            /*for( Praticien p : praticiens ){      ---->test pour trouver erreur d'affichage renvoie la liste des praHesitants
                 System.out.println( "> " + p  ) ;
             }*/
             
             //Convertir la listepraticiens hesitantd en liste observable
             ObservableList<Praticien> obListPra = FXCollections.observableArrayList(praticiens);
             
-            /*System.out.println( "T> " + obListPra.size() ) ;---->test pour trouver erreur d'affichage
+            /*System.out.println( "T> " + obListPra.size() ) ;---->test pour trouver erreur d'affichage, taille des praHesitants
             
             tabPraticiens.setItems(obListPra);
             tabPraticiens.refresh();*/
             
-            
             //Traitements spécifiques au 3 critères de tri
             if(critereTri == CRITERE_COEF_CONFIANCE){
-                Collections.sort(praticiens, new ComparateurCoefConfiance() );
+                Collections.sort(obListPra, new ComparateurCoefConfiance() );
                 //tabPraticiens.setItems(obListPra);
             }
             else if(critereTri == CRITERE_COEF_NOTORIETE){
-                Collections.sort(praticiens, new ComparateurCoefNotoriete() );
-                Collections.reverse(praticiens);
+                Collections.sort(obListPra, new ComparateurCoefNotoriete() );
+                Collections.reverse(obListPra);
                 //tabPraticiens.setItems(obListPra);
 
             }
             else{
-                Collections.sort(praticiens, new ComparateurDateVisiteur() );
-                Collections.reverse(praticiens);
+                Collections.sort(obListPra, new ComparateurDateVisiteur() );
+                Collections.reverse(obListPra);
                 //tabPraticiens.setItems(obListPra);
 
             }

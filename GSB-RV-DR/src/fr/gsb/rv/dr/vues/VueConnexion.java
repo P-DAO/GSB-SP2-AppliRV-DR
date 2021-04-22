@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Insets;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
@@ -41,9 +42,13 @@ public class VueConnexion extends Dialog<Pair<String, String>>{
         //noms des labels
         Label mat = new Label("Matricule: "); 
         Label pw = new Label("Mot de passe: ");
+        mat.setPadding(new Insets(5, 20, 10, 10));
+        pw.setPadding(new Insets(5, 15, 10, 10));
         //champs
         TextField matricule = new TextField();
         PasswordField mdp = new PasswordField();
+        matricule.setPadding(new Insets(5, 5, 5, 5));
+        mdp.setPadding(new Insets(5, 5, 5, 5));
         //butons
         ButtonType annuler = new ButtonType("Annuler", CANCEL_CLOSE);
         ButtonType seCo = new ButtonType("Se Connecter", OK_DONE);

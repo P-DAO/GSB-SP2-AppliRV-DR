@@ -206,47 +206,7 @@ public class Appli extends Application {
                 vueAccueil.setVisible(false);
                 vueRapports.setVisible(false);
                 vuePraticiens.setVisible(true);
-                
-                List<Praticien> praticiens = null;
-                /*----(affiche dans le terminal netbeans les praticiens hesitant)----
-                try {
-                    praticiens = ModeleGsbRv.getPraticiensHesitants();
-                } catch (ConnexionException ex) {
-                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                for( Praticien unPraticien : praticiens){
-                    System.out.println( unPraticien );
-                }*/
                                 
-                try {
-                    praticiens = ModeleGsbRv.getPraticiensHesitants();
-                    //System.out.println(praticiens.size());
-                    Collections.sort( praticiens, new ComparateurCoefConfiance() );
-                    for (Praticien unPraticien : praticiens){
-                        System.out.println(unPraticien.getDernierCoefConfiance());
-                    }
-                    Collections.sort( praticiens, new ComparateurCoefNotoriete() );
-                    Collections.reverse(praticiens);
-                    for (Praticien unPraticien : praticiens){
-                        //System.out.println(unPraticien);
-                        System.out.println(unPraticien.getPra_coefnotoriete());
-                    }
-                    Collections.sort( praticiens, new ComparateurDateVisiteur() );
-                    Collections.reverse(praticiens);
-
-                    for (Praticien unPraticien : praticiens){
-                        System.out.println(unPraticien.getPra_dateDerniereVisite());
-                    }
-                    
-                    
-                } catch (ConnexionException | SQLException ex) {
-                    Logger.getLogger(Appli.class.getName()).log(Level.SEVERE, null, ex);
-                }
-               
-                
             }
         });
          //Action sur le bouton Quitter
@@ -285,29 +245,6 @@ public class Appli extends Application {
      */
     public static void main(String[] args) throws ConnexionException, SQLException {
         launch(args);
-        /*System.out.println("/\nListe des practiciens hésitants-------------------------------------------------------/");
-        List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants() ;
-        for ( Praticien unPraticien : praticiens ){
-            System.out.println( unPraticien );
-        } 
-        System.out.println("/\nComparer par ordre croissant coef de confiance----------------------------------------/");
-        Collections.sort( praticiens , new ComparateurCoefConfiance() ) ;
-        for ( Praticien unPraticien : praticiens ){
-            System.out.println( unPraticien );
-        }
-        System.out.println("/\nComparer par ordre décroissant du coef de notoriété-----------------------------------/");
-        Collections.sort( praticiens , new ComparateurCoefNotoriete() ) ;
-        Collections.reverse( praticiens ) ;
-        for ( Praticien unPraticien : praticiens ){
-            System.out.println( unPraticien );
-        }
-        System.out.println("/\nComparer par ordre chronologique inverse de la dernière visite------------------------/");
-        Collections.sort( praticiens , new ComparateurDateVisiteur() ) ;
-        Collections.reverse(praticiens) ;
-        for ( Praticien unPraticien : praticiens ){
-            System.out.println( unPraticien );
-        }
-        System.out.println("/\n--------------------------------------------------------------------------------------/");*/
     }
 
 }
