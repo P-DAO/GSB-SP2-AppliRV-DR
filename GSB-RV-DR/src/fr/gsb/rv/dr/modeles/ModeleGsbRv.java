@@ -1,14 +1,15 @@
 package fr.gsb.rv.dr.modeles;
 
 import fr.gsb.rv.dr.entities.Praticien;
+import fr.gsb.rv.dr.entities.RapportVisite;
 import fr.gsb.rv.dr.entities.Visiteur;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class ModeleGsbRv {
                 return null ;
             }
         }
-        catch( Exception e ){
+        catch( SQLException e ){
             return null ;
         } 
     }
@@ -109,9 +110,175 @@ public class ModeleGsbRv {
                 return praHesitant ;
             }
         }
-        catch( Exception e ){
+        catch( SQLException e ){
             System.out.println(e.getMessage());
             return null ;
         }  
+    }
+    
+    //Table réactive
+    public static List<Visiteur> getVisiteurs() throws ConnexionException, SQLException{
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        List<Visiteur> listVisiteurs = new ArrayList<>();
+        
+        String requete = "SELECT vis_matricule, vis_nom, vis_prenom "
+                    + "FROM Visiteur";
+        
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
+            
+            ResultSet resultat = requetePreparee.executeQuery();
+            if(resultat.next()){
+                do{
+                    Visiteur visiteur = new Visiteur();
+                    visiteur.setVis_matricule(resultat.getString("vis_matricule"));
+                    visiteur.setVis_nom(resultat.getString("vis_nom"));
+                    visiteur.setVis_prenom(resultat.getString("vis_prenom"));
+                    
+                    System.out.println(visiteur);
+                    
+                    listVisiteurs.add(visiteur);
+                }while(resultat.next() == true );
+                return listVisiteurs;
+            }
+            else{
+                return listVisiteurs;
+            }
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }      
+    }
+    
+    public static List<RapportVisite> getRapportsVisite(String matricule, String mois, String annee) throws ConnexionException, SQLException {
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        List<RapportVisite> listRapVis = new ArrayList<>();
+        
+        String requete = "SELECT r.vis_matricule,rap_num, rap_date_visite, rap_bilan, rap_date_saisie, rap_coeff_confiance, rap_lu, pra_num, motif_libelle "
+                + "FROM RapportVisite r "
+                + "INNER JOIN Motif_visite mv "
+                + "ON r.motif_num = mv.motif_num"
+                + "INNER JOIN Visiteur v "
+                + "ON v.vis_matricule = r.vis_matricule "
+                + "WHERE r.vis_matricule = ? "
+                + "AND MONTH(rap_date_visite) = ? "
+                + "AND YEAR(rap_date_visite)=? ";
+        
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
+            
+            requetePreparee.setString( 1 , matricule);
+            requetePreparee.setString(2, mois);
+            requetePreparee.setString(3, annee);
+
+            ResultSet resultat = requetePreparee.executeQuery();
+            
+            if(resultat.next()){
+                do{
+                    LocalDate rapDateVisite = LocalDate.parse(resultat.getString("rap_date_visite"));
+                    LocalDate rapDateSaisie = LocalDate.parse(resultat.getString("rap_date_saisie"));
+                    Visiteur leVisiteur = getUnVisiteur(matricule);
+                    RapportVisite rappVis = new RapportVisite();
+                    rappVis.setRap_num(resultat.getInt("rap_num"));
+                    rappVis.setRap_date_visite(rapDateVisite);
+                    rappVis.setRap_bilan(resultat.getString("rap_bilan"));
+                    rappVis.setRap_date_saisie(rapDateSaisie);
+                    rappVis.setRap_coeff_confiance(resultat.getInt("rap_coeff_confiance"));
+                    rappVis.setRap_lu(resultat.getBoolean("rap_lu"));
+                    rappVis.setVisiteur(leVisiteur);
+                    rappVis.setPraticien(getUnPraticien(resultat.getInt("pra_num")));
+
+                    System.out.println(rappVis);
+                    
+                    listRapVis.add(rappVis);
+                    
+                }while( resultat.next() == true );
+                return listRapVis;
+            }else{
+                return listRapVis;
+            }
+        }catch(ConnexionException | SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        } 
+    }
+    
+    public static void setRapportVisite(String matricule, int numRapport) throws ConnexionException, SQLException{
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        String requete = "UPDATE RapportVisite r "
+                + "SET rap_lu = 1 " 
+                + "WHERE vis_matricule = ? "
+                + "AND  rap_num = ? ";
+        
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requete);
+            requetePreparee.setString(1, matricule);
+            requetePreparee.setInt(2, numRapport);
+            requetePreparee.executeUpdate();
+         
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static Visiteur getUnVisiteur(String matricule) throws ConnexionException, SQLException{
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        String requeteVis = "SELECT vis_matricule, vis_nom, vi_sprenom "
+                + "FROM Visiteur "
+                + "WHERE vis_matricule = ?";
+        
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requeteVis);
+            requetePreparee.setString( 1 , matricule);
+            ResultSet resultat = requetePreparee.executeQuery();
+            if(resultat.next()){
+                Visiteur visiteur = new Visiteur();
+                visiteur.setVis_matricule(matricule);
+                visiteur.setVis_nom(resultat.getString("vis_nom"));
+                visiteur.setVis_prenom( resultat.getString( "vis_prenom" ));
+                
+                requetePreparee.close();
+                return visiteur;
+            }
+            else{
+                return null;
+            }
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        } 
+    }
+    
+    public static Praticien getUnPraticien(int pra_num) throws ConnexionException, SQLException{
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        String requetePra = "SELECT pra_num, pra_nom, pra_ville "
+                + "FROM Praticien "
+                + "WHERE pra_num = ?";
+        
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requetePra);
+            requetePreparee.setInt(1, pra_num);
+            ResultSet resultat = requetePreparee.executeQuery();
+            if(resultat.next()){
+                Praticien praticien = new Praticien();
+                praticien.setPra_num(pra_num);
+                praticien.setPra_nom(resultat.getString("pra_nom"));
+                praticien.setPra_ville(resultat.getString("pra_ville"));
+                
+                requetePreparee.close();
+                return praticien;
+            }
+            else{
+                return null;
+            }
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }

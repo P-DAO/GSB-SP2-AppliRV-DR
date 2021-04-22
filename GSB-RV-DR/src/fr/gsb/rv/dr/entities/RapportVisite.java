@@ -19,8 +19,10 @@ public class RapportVisite {
     private int motif_num;
     private int rap_coeff_confiance;
     private boolean rap_lu;
+    private Visiteur visiteur;
+    private Praticien praticien;
     
-    public RapportVisite(int rap_num, LocalDate rap_date_visite, LocalDate rap_date_saisie, String rap_bilan, int motif_num, int rap_coeff_confiance, boolean rap_lu ){
+    public RapportVisite(int rap_num, LocalDate rap_date_visite, LocalDate rap_date_saisie, String rap_bilan, int motif_num, int rap_coeff_confiance, boolean rap_lu, Visiteur visiteur, Praticien praticien){
         this.rap_num = rap_num;
         this.rap_date_visite = rap_date_visite;
         this.rap_date_saisie = rap_date_saisie;
@@ -28,6 +30,8 @@ public class RapportVisite {
         this.motif_num = motif_num;
         this.rap_coeff_confiance = rap_coeff_confiance;
         this.rap_lu = rap_lu;
+        this.visiteur = visiteur;
+        this.praticien = praticien;
     }
     
     public RapportVisite(){
@@ -90,11 +94,25 @@ public class RapportVisite {
         this.rap_lu = rap_lu;
     }
 
+    public Visiteur getVisiteur() {
+        return visiteur;
+    }
+
+    public void setVisiteur(Visiteur visiteur) {
+        this.visiteur = visiteur;
+    }
+
+    public Praticien getPraticien() {
+        return praticien;
+    }
+
+    public void setPraticien(Praticien praticien) {
+        this.praticien = praticien;
+    }  
+
     @Override
     public String toString() {
-        return "RapportVisite{" + "rap_num=" + rap_num + ", rap_date_visite=" + rap_date_visite + ", rap_date_saisie=" + rap_date_saisie + ", rap_bilan=" + rap_bilan + ", motif_num=" + motif_num + ", rap_coeff_confiance=" + rap_coeff_confiance + ", rap_lu=" + rap_lu + '}';
+        return "RapportVisite{" + "rap_num=" + rap_num + ", rap_date_visite=" + rap_date_visite + ", rap_date_saisie=" + rap_date_saisie + ", rap_bilan=" + rap_bilan + ", motif_num=" + motif_num + ", rap_coeff_confiance=" + rap_coeff_confiance + ", rap_lu=" + rap_lu + ", visiteur=" + visiteur + ", praticien=" + praticien + '}';
     }
-    
-    
     
 }
