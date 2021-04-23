@@ -1,5 +1,6 @@
 package fr.gsb.rv.dr.modeles;
 
+import fr.gsb.rv.dr.entities.Motif_visite;
 import fr.gsb.rv.dr.entities.Praticien;
 import fr.gsb.rv.dr.entities.RapportVisite;
 import fr.gsb.rv.dr.entities.Visiteur;
@@ -189,6 +190,7 @@ public class ModeleGsbRv {
                     rappVis.setRap_lu(resultat.getBoolean("rap_lu"));
                     rappVis.setVisiteur(leVisiteur);
                     rappVis.setPraticien(getUnPraticien(resultat.getInt("pra_num")));
+                    rappVis.setMotif(getUnMotif(resultat.getString("motif_libelle")));
 
                     System.out.println(rappVis);
                     
@@ -272,6 +274,34 @@ public class ModeleGsbRv {
                 
                 requetePreparee.close();
                 return praticien;
+            }
+            else{
+                return null;
+            }
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    
+    public static Motif_visite getUnMotif(String motif_libelle)throws ConnexionException, SQLException{
+        Connection connexion = ConnexionBD.getConnexion();
+        
+        String requeteMotif = "SELECT motif_num, motif_libelle "
+                + "FROM Motif_visite "
+                + "WHERE motif_libelle = ? ";
+        
+        try{
+            PreparedStatement requetePreparee = (PreparedStatement) connexion.prepareStatement(requeteMotif);
+            requetePreparee.setString(1, motif_libelle);
+            ResultSet resultat = requetePreparee.executeQuery();
+            if(resultat.next()){
+                Motif_visite motif = new Motif_visite();
+                motif.setMotif_num(resultat.getInt("motif_num"));
+                motif.setMotif_libelle(motif_libelle);
+                
+                requetePreparee.close();
+                return motif;
             }
             else{
                 return null;

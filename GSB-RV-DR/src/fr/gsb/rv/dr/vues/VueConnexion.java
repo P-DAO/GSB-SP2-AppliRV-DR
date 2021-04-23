@@ -49,7 +49,7 @@ public class VueConnexion extends Dialog<Pair<String, String>>{
         PasswordField mdp = new PasswordField();
         matricule.setPadding(new Insets(5, 5, 5, 5));
         mdp.setPadding(new Insets(5, 5, 5, 5));
-        //butons
+        //buttons
         ButtonType annuler = new ButtonType("Annuler", CANCEL_CLOSE);
         ButtonType seCo = new ButtonType("Se Connecter", OK_DONE);
         //ajout du label et du champ dans la boîte horizontale
@@ -59,7 +59,7 @@ public class VueConnexion extends Dialog<Pair<String, String>>{
         vb.getChildren().addAll(hb1, hb2);
         //ajout dans la boîte de dialog 
         getDialogPane().setContent(vb);
-        //ajout du es boutons 
+        //ajout des boutons 
         this.getDialogPane().getButtonTypes().addAll(annuler, seCo);
    
         setResultConverter(

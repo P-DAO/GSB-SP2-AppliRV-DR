@@ -129,7 +129,7 @@ public class Visiteur {
 
     @Override
     public String toString() {
-        return vis_nom.toUpperCase()+" "+ vis_prenom + " (" + vis_matricule + " )";
+        return vis_nom.toUpperCase()+" "+ vis_prenom + " (" + vis_matricule + ")";
     }
 
     

@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.gsb.rv.dr.technique;
+package fr.gsb.rv.dr.vues;
 
 /**
  *
  * @author developpeur
  */
-public enum Mois {
-        Janvier, Février, Mars, Avril, Mai, Juin, Juillet, Août, Septembre, Octobre, Novembre, Décembre
+class Optinal<T> {
     
 }

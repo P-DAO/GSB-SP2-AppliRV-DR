@@ -256,7 +256,7 @@ public class Appli extends Application {
         });
         
         
-        Scene scene = new Scene(root, 700, 400);
+        Scene scene = new Scene(root, 890, 520);
         primaryStage.setTitle("GSB-RV-DR");
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -66,7 +66,7 @@ public class PanneauPraticiens extends Pane{
         VBox praVBox = new VBox();
         praVBox.setStyle("-fx-background-color: white;");
         praVBox.setSpacing(10);
-        praVBox.setPadding(new Insets(10, 410, 10, 10));
+        praVBox.setPadding(new Insets(10, 450, 10, 10));
         Label selectionTri = new Label("Sélectionner un critère de tri");
         selectionTri.setStyle("-fx-font-weight: bold");
         praVBox.getChildren().add(selectionTri);
