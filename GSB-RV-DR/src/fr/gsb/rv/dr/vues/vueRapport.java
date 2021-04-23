@@ -47,7 +47,7 @@ public class vueRapport extends Dialog {
             lu.setText("Lu: Non");
         }
         //Boutons
-        ButtonType btnLu = new ButtonType("Rapport LU", OK_DONE);
+        ButtonType btnLu = new ButtonType("Manquer comme LU", OK_DONE);
         if(leRapportVis.isRap_lu() == false){
             this.getDialogPane().getButtonTypes().add(btnLu);
         }else{

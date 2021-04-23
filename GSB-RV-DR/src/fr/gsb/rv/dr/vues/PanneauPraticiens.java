@@ -55,7 +55,7 @@ public class PanneauPraticiens extends Pane{
     
     //Création des boutons radio
     private RadioButton rbCoefConfiance = new RadioButton("Confiance");
-    private RadioButton rbCoefNotoriete = new RadioButton("Notriété");
+    private RadioButton rbCoefNotoriete = new RadioButton("Notoriété");
     private RadioButton rbDateVisite = new RadioButton("Date Visite");
     
     //Création de la tableView
