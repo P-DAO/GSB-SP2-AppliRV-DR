@@ -21,19 +21,22 @@ import javafx.scene.layout.VBox;
 public class PanneauAccueil extends Pane{
     public PanneauAccueil (){
         Class<?> clazz = this.getClass();
+        this.setStyle("-fx-background-color: white;");
         InputStream input = clazz.getResourceAsStream("/image/logo-gsb.png");
         Image image = new Image(input, 568, 352, false, true);
         ImageView imageView = new ImageView(image);
-        VBox vbImage = new VBox();
-        vbImage.getChildren().add(imageView);
-        vbImage.setAlignment(Pos.CENTER);
+        
+        imageView.setFitHeight(255);
+        imageView.setFitWidth(400);
+        imageView.setX(250);
+        imageView.setY(125);
+        
         Label acLabel = new Label("Accueil- GSB-RV");
         acLabel.setStyle("-fx-font: 40 arial;");
-        VBox acVBox = new VBox();
-        acVBox.getChildren().add(acLabel);
-        acVBox.setStyle("-fx-background-color: white;");
-        acVBox.getChildren().add(vbImage);
-        this.getChildren().add(acVBox) ;
+        acLabel.setLayoutX(300);
+        this.getChildren().add(imageView);
+        this.getChildren().add(acLabel);
+        
         
     }
     
