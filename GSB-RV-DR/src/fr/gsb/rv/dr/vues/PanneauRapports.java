@@ -65,7 +65,7 @@ public class PanneauRapports extends Pane{
         VBox vbAll = new VBox();
         vbAll.setStyle("-fx-background-color: white;");
         vbAll.setSpacing(10);
-        vbAll.setPadding(new Insets(10, 400, 10, 10));
+        vbAll.setPadding(new Insets(10, 810, 10, 10));
         //Grille qui prend les3 comboBox
         GridPane grilleCombo = new GridPane();
         grilleCombo.setHgap(10);                //horizontal espace pixel
@@ -159,7 +159,14 @@ public class PanneauRapports extends Pane{
         colVille.setCellValueFactory( new PropertyValueFactory<>( "pra_ville" ));
         colDateVisite.setCellValueFactory( new PropertyValueFactory<>( "rap_date_visite" ));
         colRedaction.setCellValueFactory( new PropertyValueFactory<>( "rap_date_saisie" ));
-               
+        
+        //Taille des Colonnes
+        colNumero.setMinWidth(162);
+        colPraticien.setMinWidth(162);
+        colVille.setMinWidth(162);
+        colDateVisite.setMinWidth(162);
+        colRedaction.setMinWidth(162);
+        
         //Valoriser les colonnes qui viennes de la classe Praticien (personnalisation)
         colPraticien.setCellValueFactory(
         new Callback<CellDataFeatures<RapportVisite, String>, ObservableValue<String>>(){
