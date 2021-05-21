@@ -6,6 +6,7 @@
 package fr.gsb.rv.dr.vues;
 
 import fr.gsb.rv.dr.entities.RapportVisite;
+import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import javafx.geometry.Insets;
 import javafx.scene.control.ButtonBar.ButtonData;
 import static javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE;
@@ -31,7 +32,7 @@ public class vueRapport extends Dialog {
         vbAll.setPadding(new Insets(5, 350, 5, 5));
         //Titre de la fenêtre 
         setTitle("Rapport numéro: " + leRapportVis.getRap_num());
-        setHeaderText("Informations rapport: ");
+        setHeaderText(leRapportVis.getVisiteur().getVis_nom() + " " + leRapportVis.getVisiteur().getVis_prenom() + "\n" + "Informations du Rapport Visite");
         //Déclaration des variables et valorisation
         Text dateVis = new Text("La date de la Visite: " + leRapportVis.getRap_date_visite());
         Text dateRed = new Text("Date de rédaction: " + leRapportVis.getRap_date_saisie());
