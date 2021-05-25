@@ -122,6 +122,23 @@ public class PanneauPraticiens extends Pane{
         if(grpTri.getSelectedToggle() != null){
             colConfiance.setStyle("-fx-background-color: cyan");
         }
+
+	colDate.setCellFactory(
+            colonne ->{
+                return new TableCell<Praticien, LocalDate>(){
+                    @Override
+                    protected void updateItem( LocalDate item, boolean empty ){
+                        super.updateItem( item, empty );
+                        if( empty ){
+                            setText("");
+                        }
+                        else{
+                            DateTimeFormatter formateur = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                            setText( item.format(formateur));
+                        }
+                    }
+                };
+            }); 
 //----------------->
 
         //Observation pour MAJ
